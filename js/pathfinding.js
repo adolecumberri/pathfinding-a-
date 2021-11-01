@@ -1,28 +1,29 @@
 // Start location will be in the following format:
 // [distanceFromTop, distanceFromLeft]
-var findShortestPath = function (startCoordinates, grid) {
-  var distanceFromTop = startCoordinates[0];
-  var distanceFromLeft = startCoordinates[1];
+let findShortestPath = function (startCoordinates, grid) {
+  let visited = {};
+  let distanceFromTop = startCoordinates[0];
+  let distanceFromLeft = startCoordinates[1];
 
   // Each "location" will store its coordinates
   // and the shortest path required to arrive there
-  var location = {
+  let location = {
     distanceFromTop: distanceFromTop,
     distanceFromLeft: distanceFromLeft,
     path: [],
     status: "Start",
   };
-
+debugger;
   // Initialize the queue with the start location already inside
-  var queue = [location];
+  let queue = [location];
 
   // Loop through the grid searching for the goal
   while (queue.length > 0) {
     // Take the first location off the queue
-    var currentLocation = queue.shift();
+    let currentLocation = queue.shift();
 
     // Explore North
-    var newLocation = exploreInDirection(currentLocation, "North", grid);
+    let newLocation = exploreInDirection(currentLocation, "North", grid, visited);
     if (newLocation.status === "Goal") {
       return newLocation.path;
     } else if (newLocation.status === "Valid") {
@@ -30,7 +31,7 @@ var findShortestPath = function (startCoordinates, grid) {
     }
 
     // Explore East
-    var newLocation = exploreInDirection(currentLocation, "East", grid);
+    newLocation = exploreInDirection(currentLocation, "East", grid, visited);
     if (newLocation.status === "Goal") {
       return newLocation.path;
     } else if (newLocation.status === "Valid") {
@@ -38,7 +39,7 @@ var findShortestPath = function (startCoordinates, grid) {
     }
 
     // Explore South
-    var newLocation = exploreInDirection(currentLocation, "South", grid);
+    newLocation = exploreInDirection(currentLocation, "South", grid, visited);
     if (newLocation.status === "Goal") {
       return newLocation.path;
     } else if (newLocation.status === "Valid") {
@@ -46,7 +47,7 @@ var findShortestPath = function (startCoordinates, grid) {
     }
 
     // Explore West
-    var newLocation = exploreInDirection(currentLocation, "West", grid);
+    newLocation = exploreInDirection(currentLocation, "West", grid, visited);
     if (newLocation.status === "Goal") {
       return newLocation.path;
     } else if (newLocation.status === "Valid") {
@@ -62,10 +63,10 @@ var findShortestPath = function (startCoordinates, grid) {
 // (a location is "valid" if it is on the grid, is not an "obstacle",
 // and has not yet been visited by our algorithm)
 // Returns "Valid", "Invalid", "Blocked", or "Goal"
-var locationStatus = function (location, grid) {
-  var gridSize = grid.length;
-  var dft = location.distanceFromTop;
-  var dfl = location.distanceFromLeft;
+let locationStatus = function (location, grid) {
+  let gridSize = grid.length;
+  let dft = location.distanceFromTop;
+  let dfl = location.distanceFromLeft;
 
   if (
     location.distanceFromLeft < 0 ||
@@ -77,7 +78,9 @@ var locationStatus = function (location, grid) {
     return "Invalid";
   } else if (grid[dft][dfl] === "Goal") {
     return "Goal";
+  // } else if (grid[dft][dfl] !== "Empty") {
   } else if (grid[dft][dfl] !== "Empty") {
+
     // location is either an obstacle or has been visited
     return "Blocked";
   } else {
@@ -87,12 +90,12 @@ var locationStatus = function (location, grid) {
 
 // Explores the grid from the given location in the given
 // direction
-var exploreInDirection = function (currentLocation, direction, grid) {
-  var newPath = currentLocation.path.slice();
+let exploreInDirection = function (currentLocation, direction, grid, visited) {
+  let newPath = currentLocation.path.slice();
   newPath.push(direction);
 
-  var dft = currentLocation.distanceFromTop;
-  var dfl = currentLocation.distanceFromLeft;
+  let dft = currentLocation.distanceFromTop;
+  let dfl = currentLocation.distanceFromLeft;
 
   if (direction === "North") {
     dft -= 1;
@@ -114,6 +117,7 @@ var exploreInDirection = function (currentLocation, direction, grid) {
 
   // If this new location is valid, mark it as 'Visited'
   if (newLocation.status === "Valid") {
+    // visited[`${newLocation.distanceFromTop}-${newLocation.distanceFromLeft}`] = "Visited";
     grid[newLocation.distanceFromTop][newLocation.distanceFromLeft] = "Visited";
   }
 
