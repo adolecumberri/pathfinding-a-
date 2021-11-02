@@ -8,6 +8,7 @@ body {
     /* align-items: center; */
     height: 100vh;
     overflow: hidden;
+    background-color: beige;
 }
 #container {
     margin: 0 5%;
@@ -29,8 +30,8 @@ body {
 .sub-div {
     flex-grow: 1;
     position: absolute;
-    width: 160px;
-    height: 84px;
+    width: 80px;
+    height: 40px;
     /* height: 100px; */
     box-sizing: border-box;
     border: 1px solid black;

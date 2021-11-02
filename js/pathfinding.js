@@ -13,7 +13,7 @@ let findShortestPath = function (startCoordinates, grid) {
     path: [],
     status: "Start",
   };
-debugger;
+// debugger;
   // Initialize the queue with the start location already inside
   let queue = [location];
 
