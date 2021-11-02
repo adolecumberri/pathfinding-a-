@@ -51,19 +51,19 @@ function generateBeautyBarGrid() {
     let newGrid = [];
     for (let key in barGrid) {
         //inicio la fila si no existe.
-       if(newGrid[barGrid[key].yCoord] === undefined){
-           newGrid[barGrid[key].yCoord] = [];
-       }
+        if (newGrid[barGrid[key].yCoord] === undefined) {
+            newGrid[barGrid[key].yCoord] = [];
+        }
 
-       if(barGrid[key].key === doorKey){
+        if (barGrid[key].key === doorKey) {
 
-           newGrid[ barGrid[key].yCoord ][ barGrid[key].xCoord ] = "Start";
+            newGrid[barGrid[key].yCoord][barGrid[key].xCoord] = "Start";
 
-       }else if (barGrid[key].isOccupied){
-        newGrid[ barGrid[key].yCoord ][ barGrid[key].xCoord ] = "Obstacle";
-       }else {
-        newGrid[ barGrid[key].yCoord ][ barGrid[key].xCoord ] = "Empty";
-       }
+        } else if (barGrid[key].isOccupied) {
+            newGrid[barGrid[key].yCoord][barGrid[key].xCoord] = "Obstacle";
+        } else {
+            newGrid[barGrid[key].yCoord][barGrid[key].xCoord] = "Empty";
+        }
 
     }
 
@@ -74,8 +74,8 @@ function generateBeautyBarGrid() {
 }
 
 grid = generateBeautyBarGrid();
-
-let way = findShortestPath([0, 1], grid);
+// debugger;
+let way = findShortestPath([1, 0], grid, paintGrid);
 
 function gridColor(type) {
     switch (type) {
@@ -91,7 +91,8 @@ function gridColor(type) {
 
         case "Visited":
             return "yellow";
-
+        case "Walked":
+            return "blue";
         default:
             debugger;
     }
@@ -99,6 +100,7 @@ function gridColor(type) {
 }
 
 function animationStart(e) {
+    
     // console.log(e);
     // let finalPath = `path("M ${myTop + 80},${left - 9}`
     let myTop = container.offsetTop;
@@ -130,22 +132,22 @@ function animationStart(e) {
 
         switch (way) {
             case "East":
-                initKeyFrame.left += 160;
+                initKeyFrame.left += 80;
                 break;
             case "South":
-                initKeyFrame.top += 80;
+                initKeyFrame.top += 40;
                 break;
             case "North":
-                initKeyFrame.top -= 80
+                initKeyFrame.top -= 40
                 break;
             case "West":
-                initKeyFrame.left -= 160;
+                initKeyFrame.left -= 80;
                 break;
 
             default:
                 debugger;
         };
-        defaultTiming.duration += 800;
+        defaultTiming.duration += 600;
         animation.push({
             left: `${initKeyFrame.left}px`,
             top: `${initKeyFrame.top}px`,
@@ -186,17 +188,17 @@ function animationStart(e) {
 
 function loadWall(e, i, j) {
 
-    if(!obstacles[i]){
+    if (!obstacles[i]) {
         obstacles[i] = [];
     }
     obstacles[i][j] = "Obstacle";
     createGrid();
-    way = findShortestPath([0, 0], grid);
+    way = findShortestPath([1, 0], grid);
     paintGrid();
 }
 
 function paintGrid() {
-    console.log("pinto", way, grid)
+    // console.log("pinto", way, grid)
     container.innerHTML = "";
     grid.forEach((row, i) => {
         // let rowDiv = document.createElement("div");
@@ -211,9 +213,15 @@ function paintGrid() {
             newDiv.style["left"] = `${80 * j}px`;
             // debugger;
             newDiv.style.backgroundColor = gridColor(grid[i][j]);
+
+            newDiv.innerHTML = `${i}-${j}`;
             if (grid[i][j] === "Start") {
                 newDiv.style["z-index"] = 5;
-                newDiv.addEventListener("click", (e) => animationStart(e))
+                
+                newDiv.addEventListener("click", (e) => {
+                    // paintWay();
+                    animationStart(e)
+                })
                 // newDiv.onanimationstart = () => {
                 //     console.log('Animation started');
                 // };
@@ -230,4 +238,27 @@ function paintGrid() {
     });
 }
 
+
+let paintWay = () => {
+    let doorTop = 1, doorLeft = 0;
+
+    way.forEach(way => {
+
+        if (way === "North") {
+            doorTop -= 1;
+        } else if (way === "East") {
+            doorLeft += 1;
+        } else if (way === "South") {
+            doorTop += 1;
+        } else if (way === "West") {
+            doorLeft -= 1;
+        }
+
+        grid[doorTop][doorLeft] = "Walked";
+
+    });
+
+    paintGrid();
+}
 paintGrid();
+

@@ -1,6 +1,9 @@
 // Start location will be in the following format:
 // [distanceFromTop, distanceFromLeft]
-let findShortestPath = function (startCoordinates, grid) {
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+let findShortestPath = function (startCoordinates, grid, paintFunction) {
+  // debugger;
   let visited = {};
   let distanceFromTop = startCoordinates[0];
   let distanceFromLeft = startCoordinates[1];
@@ -23,7 +26,7 @@ let findShortestPath = function (startCoordinates, grid) {
     let currentLocation = queue.shift();
 
     // Explore North
-    let newLocation = exploreInDirection(currentLocation, "North", grid, visited);
+    let newLocation = exploreInDirection(currentLocation, "North", grid, visited, paintFunction);
     if (newLocation.status === "Goal") {
       return newLocation.path;
     } else if (newLocation.status === "Valid") {
@@ -31,7 +34,7 @@ let findShortestPath = function (startCoordinates, grid) {
     }
 
     // Explore East
-    newLocation = exploreInDirection(currentLocation, "East", grid, visited);
+    newLocation = exploreInDirection(currentLocation, "East", grid, visited, paintFunction);
     if (newLocation.status === "Goal") {
       return newLocation.path;
     } else if (newLocation.status === "Valid") {
@@ -39,7 +42,7 @@ let findShortestPath = function (startCoordinates, grid) {
     }
 
     // Explore South
-    newLocation = exploreInDirection(currentLocation, "South", grid, visited);
+    newLocation = exploreInDirection(currentLocation, "South", grid, visited, paintFunction);
     if (newLocation.status === "Goal") {
       return newLocation.path;
     } else if (newLocation.status === "Valid") {
@@ -47,7 +50,7 @@ let findShortestPath = function (startCoordinates, grid) {
     }
 
     // Explore West
-    newLocation = exploreInDirection(currentLocation, "West", grid, visited);
+    newLocation = exploreInDirection(currentLocation, "West", grid, visited, paintFunction);
     if (newLocation.status === "Goal") {
       return newLocation.path;
     } else if (newLocation.status === "Valid") {
@@ -64,15 +67,17 @@ let findShortestPath = function (startCoordinates, grid) {
 // and has not yet been visited by our algorithm)
 // Returns "Valid", "Invalid", "Blocked", or "Goal"
 let locationStatus = function (location, grid) {
-  let gridSize = grid.length;
+  if(grid[location.distanceFromLeft] === undefined ) debugger;
+  let gridXSize = grid.length;
+  let gridYSize = grid[0].length;
   let dft = location.distanceFromTop;
   let dfl = location.distanceFromLeft;
 
   if (
     location.distanceFromLeft < 0 ||
-    location.distanceFromLeft >= gridSize ||
+    location.distanceFromLeft >= gridYSize ||
     location.distanceFromTop < 0 ||
-    location.distanceFromTop >= gridSize
+    location.distanceFromTop >= gridXSize
   ) {
     // location is not on the grid--return false
     return "Invalid";
@@ -90,7 +95,7 @@ let locationStatus = function (location, grid) {
 
 // Explores the grid from the given location in the given
 // direction
-let exploreInDirection = function (currentLocation, direction, grid, visited) {
+let exploreInDirection = function (currentLocation, direction, grid, visited, paintFunction) {
   let newPath = currentLocation.path.slice();
   newPath.push(direction);
 
@@ -118,7 +123,18 @@ let exploreInDirection = function (currentLocation, direction, grid, visited) {
   // If this new location is valid, mark it as 'Visited'
   if (newLocation.status === "Valid") {
     // visited[`${newLocation.distanceFromTop}-${newLocation.distanceFromLeft}`] = "Visited";
-    grid[newLocation.distanceFromTop][newLocation.distanceFromLeft] = "Visited";
+    // setTimeout( () => {
+      grid[newLocation.distanceFromTop][newLocation.distanceFromLeft] = "Visited";
+
+    // }, 500 );
+
+( async () => await delay(500) )();
+    // setTimeout( () => {
+      // alert("a")
+      paintFunction()
+    // }, 500);
+ 
+
   }
 
   return newLocation;
