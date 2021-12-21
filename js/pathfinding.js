@@ -66,10 +66,19 @@ let findShortestPath = function (startCoordinates, grid, paintFunction) {
 // (a location is "valid" if it is on the grid, is not an "obstacle",
 // and has not yet been visited by our algorithm)
 // Returns "Valid", "Invalid", "Blocked", or "Goal"
+
+/**
+ *  This Function will check a location's status.
+ * @param {{ distanceFromTop: any; distanceFromLeft: any; path: any; status: string;}} location 
+ * @param {*} grid 
+ * @returns "Valid" | "Invalid" | "Blocked" | "Goal"
+ */
 let locationStatus = function (location, grid) {
+
   if (grid[location.distanceFromLeft] === undefined) debugger;
-  let gridXSize = grid.length;
-  let gridYSize = grid[0].length;
+
+  let gridXSize = grid.length; //tope X
+  let gridYSize = grid[0].length; // tope Y
   let dft = location.distanceFromTop;
   let dfl = location.distanceFromLeft;
 
@@ -83,9 +92,7 @@ let locationStatus = function (location, grid) {
     return "Invalid";
   } else if (grid[dft][dfl] === "Goal") {
     return "Goal";
-    // } else if (grid[dft][dfl] !== "Empty") {
   } else if (grid[dft][dfl] !== "Empty") {
-
     // location is either an obstacle or has been visited
     return "Blocked";
   } else {
@@ -112,7 +119,7 @@ let exploreInDirection = function (currentLocation, direction, grid, visited, pa
     dfl -= 1;
   }
 
-  var newLocation = {
+  let newLocation = {
     distanceFromTop: dft,
     distanceFromLeft: dfl,
     path: newPath,
@@ -122,19 +129,11 @@ let exploreInDirection = function (currentLocation, direction, grid, visited, pa
 
   // If this new location is valid, mark it as 'Visited'
   if (newLocation.status === "Valid") {
-    // visited[`${newLocation.distanceFromTop}-${newLocation.distanceFromLeft}`] = "Visited";
-    // setTimeout( () => {
     grid[newLocation.distanceFromTop][newLocation.distanceFromLeft] = "Visited";
 
-    // }, 500 );
-
     (async () => await delay(500))();
-    // setTimeout( () => {
-    // alert("a")
-    paintFunction()
-    // }, 500);
 
-
+    paintFunction();
   }
 
   return newLocation;
