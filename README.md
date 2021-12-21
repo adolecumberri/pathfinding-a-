@@ -1,2 +1,3 @@
-# css-offset-path
- practica para usar offsetPath
+# Pathfinding a*
+
+not finished.

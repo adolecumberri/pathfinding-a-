@@ -16,7 +16,7 @@ let findShortestPath = function (startCoordinates, grid, paintFunction) {
     path: [],
     status: "Start",
   };
-// debugger;
+  // debugger;
   // Initialize the queue with the start location already inside
   let queue = [location];
 
@@ -67,7 +67,7 @@ let findShortestPath = function (startCoordinates, grid, paintFunction) {
 // and has not yet been visited by our algorithm)
 // Returns "Valid", "Invalid", "Blocked", or "Goal"
 let locationStatus = function (location, grid) {
-  if(grid[location.distanceFromLeft] === undefined ) debugger;
+  if (grid[location.distanceFromLeft] === undefined) debugger;
   let gridXSize = grid.length;
   let gridYSize = grid[0].length;
   let dft = location.distanceFromTop;
@@ -83,7 +83,7 @@ let locationStatus = function (location, grid) {
     return "Invalid";
   } else if (grid[dft][dfl] === "Goal") {
     return "Goal";
-  // } else if (grid[dft][dfl] !== "Empty") {
+    // } else if (grid[dft][dfl] !== "Empty") {
   } else if (grid[dft][dfl] !== "Empty") {
 
     // location is either an obstacle or has been visited
@@ -124,23 +124,22 @@ let exploreInDirection = function (currentLocation, direction, grid, visited, pa
   if (newLocation.status === "Valid") {
     // visited[`${newLocation.distanceFromTop}-${newLocation.distanceFromLeft}`] = "Visited";
     // setTimeout( () => {
-      grid[newLocation.distanceFromTop][newLocation.distanceFromLeft] = "Visited";
+    grid[newLocation.distanceFromTop][newLocation.distanceFromLeft] = "Visited";
 
     // }, 500 );
 
-( async () => await delay(500) )();
+    (async () => await delay(500))();
     // setTimeout( () => {
-      // alert("a")
-      paintFunction()
+    // alert("a")
+    paintFunction()
     // }, 500);
- 
+
 
   }
 
   return newLocation;
 };
 
-// OK. We have the functions we need--let's run them to get our shortest path!
 
 // // Create a 4x4 grid
 // // Represent the grid as a 2-dimensional array

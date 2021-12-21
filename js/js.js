@@ -260,5 +260,6 @@ let paintWay = () => {
 
     paintGrid();
 }
+
 paintGrid();
 
