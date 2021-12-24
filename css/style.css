@@ -1,58 +1,24 @@
 
-
-body {
+* {
     margin: 0;
     padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+.container {
+    background-color: beige;
+    height: inherit;
     display: flex;
     justify-content: center;
-    /* align-items: center; */
-    height: 100vh;
-    overflow: hidden;
-    background-color: beige;
-}
-#container {
-    margin: 0 5%;
-    padding: 0;
-    width: 100%;
-    /* display: flex;
-    flex-direction: column; */
-    height: 90vh;
-    /* max-width: 100%; */
-    position: relative;
+    align-items: center;
 }
 
-/* .row {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-} */
-
-.sub-div {
-    flex-grow: 1;
-    position: absolute;
-    width: 80px;
-    height: 40px;
-    /* height: 100px; */
-    box-sizing: border-box;
-    border: 1px solid black;
-    /* height: 30px; */
-}
-
-
-
-
-@keyframes right {
-    
-}
-
-@keyframes left {
-    
-}
-
-@keyframes down {
-    
-}
-
-@keyframes up {
-    
+#grid {
+    width: 1200px;
+    height: 600px;
+    border: 1px solid #333;
+    background-color: #eee;
 }

@@ -6,9 +6,23 @@ class pathFinding {
     ghostGrid = null;
     path = null;
     queue = [];
+    DIRECTIONS = {
+        NORTH: "NORTH",
+        EAST: "EASR",
+        SOUTH: DIRECTIONS.SOUTH,
+        WEST: DIRECTIONS.WEST,
+    };
+
+    TYPES = {
+        VALID: "VALID",
+        GOAL: "GOAL",
+        EMPTY: "EMPTY",
+        BLOQUED: "BLOQUED",
+        START: "START",
+    }
 
     /**
-     * @param {("Valid" | "Invalid" | "Blocked" | "Goal") [][]} grid 
+     * @param {(TYPES.VALID | "Invalid" | "Blocked" | TYPES.GOAL) [][]} grid 
      */
     constructor(grid) {
 
@@ -29,7 +43,7 @@ class pathFinding {
             dft: initialDFT,
             dfl: initialDFL,
             path: [],
-            status: "Start",
+            status: TYPES.START,
         };
 
         //initial queue location.
@@ -41,34 +55,37 @@ class pathFinding {
             let currentLocation = queue.shift();
 
             // Explore North
-            let newLocation = this.exploreInDirection(currentLocation, "North");
-            if (newLocation.status === "Goal") {
+            let newLocation = this.exploreInDirection(currentLocation, DIRECTIONS.NORTH);
+            let locations = [DIRECTIONS.NORTH]
+
+
+            if (newLocation.status === TYPES.GOAL) {
                 return newLocation.path;
-            } else if (newLocation.status === "Valid") {
+            } else if (newLocation.status === TYPES.VALID) {
                 queue.push(newLocation);
             }
 
             // Explore East
-            newLocation = this.exploreInDirection(currentLocation, "East");
-            if (newLocation.status === "Goal") {
+            newLocation = this.exploreInDirection(currentLocation, DIRECTIONS.EAST);
+            if (newLocation.status === TYPES.GOAL) {
                 return newLocation.path;
-            } else if (newLocation.status === "Valid") {
+            } else if (newLocation.status === TYPES.VALID) {
                 queue.push(newLocation);
             }
 
             // Explore South
-            newLocation = this.exploreInDirection(currentLocation, "South");
-            if (newLocation.status === "Goal") {
+            newLocation = this.exploreInDirection(currentLocation, DIRECTIONS.SOUTH);
+            if (newLocation.status === TYPES.GOAL) {
                 return newLocation.path;
-            } else if (newLocation.status === "Valid") {
+            } else if (newLocation.status === TYPES.VALID) {
                 queue.push(newLocation);
             }
 
             // Explore West
-            newLocation = this.exploreInDirection(currentLocation, "West");
-            if (newLocation.status === "Goal") {
+            newLocation = this.exploreInDirection(currentLocation, DIRECTIONS.WEST);
+            if (newLocation.status === TYPES.GOAL) {
                 return newLocation.path;
-            } else if (newLocation.status === "Valid") {
+            } else if (newLocation.status === TYPES.VALID) {
                 queue.push(newLocation);
             }
         }
@@ -90,11 +107,11 @@ class pathFinding {
         //adjust distances from top or left.
         if (direction === "North") {
             dft -= 1;
-        } else if (direction === "East") {
+        } else if (direction === DIRECTIONS.EAST) {
             dfl += 1;
-        } else if (direction === "South") {
+        } else if (direction === DIRECTIONS.SOUTH) {
             dft += 1;
-        } else if (direction === "West") {
+        } else if (direction === DIRECTIONS.WEST) {
             dfl -= 1;
         }
 
@@ -106,7 +123,7 @@ class pathFinding {
         };
 
         // If this new location is valid, mark it as 'Visited'
-        if (newLocation.status === "Valid") {
+        if (newLocation.status === TYPES.VALID) {
             this.ghostGrid[newLocation.distanceFromTop][newLocation.distanceFromLeft] = "Visited";
         }
 
@@ -116,7 +133,7 @@ class pathFinding {
     /**
      *  This Function will check a location's status.
      * @param {{ dft: number; dfl: number; path: string[]; status: string; }} location 
-     * @returns "Valid" | "Invalid" | "Blocked" | "Goal"
+     * @returns TYPES.VALID | "Invalid" | "Blocked" | TYPES.GOAL
      */
     locationStatus = function (location) {
 
@@ -135,13 +152,13 @@ class pathFinding {
         ) {
             // location is not on the grid--return false
             return "Invalid";
-        } else if (this.ghostGrid[dft][dfl] === "Goal") {
-            return "Goal";
-        } else if (this.ghostGrid[dft][dfl] !== "Empty") {
+        } else if (this.ghostGrid[dft][dfl] === TYPES.GOAL) {
+            return TYPES.GOAL;
+        } else if (this.ghostGrid[dft][dfl] !== TYPES.EMPTY) {
             // location is either an obstacle or has been visited
-            return "Blocked";
+            return TYPES.BLOQUED;
         } else {
-            return "Valid";
+            return TYPES.VALID;
         }
     };
 
