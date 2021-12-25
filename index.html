@@ -16,11 +16,12 @@
         <div id="container"></div> -->
     <div class="container">
         <div class="buttons-container">
-            <input type="button" value="start"/>
-            
-            <input type="button" value="end"/>
-            
-            <input type="button" value="obstacle"/>
+            <input type="button" value="start" class="options" onclick='optionsHighlight(this);setCellType("START");' />
+
+            <input type="button" value="end" class="options" onclick='optionsHighlight(this);setCellType("GOAL")' />
+
+            <input type="button" value="obstacle" class="options"
+                onclick='optionsHighlight(this);setCellType("BLOQUED");' />
         </div>
         <div id="grid">
 

@@ -24,9 +24,10 @@ generateBox = ({ cell_width, cell_height, element }) => {
         `width: ${cell_height}px;
         height: ${cell_width}px;
         border: 1px solid #ccc;
-        boxSizing: border-box;`
+        box-sizing: border-box;`
     );
-
+    newDiv.classList.add("cell");
+    
     element.appendChild(newDiv);
 
     return newDiv;
