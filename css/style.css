@@ -26,6 +26,20 @@ html, body {
     flex-wrap: wrap;
 }
 
+@media screen and (max-width: 1200px) {
+    #grid {
+        width: 800px;
+        height: 600px;
+    }    
+}
+
+@media screen and (max-width: 800px) {
+    #grid {
+        width: 400px;
+        height: 600px;
+    }    
+}
+
 .buttons-container{
     position: absolute;
     top: 8px;

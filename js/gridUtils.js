@@ -23,7 +23,6 @@ generateBox = ({ cell_width, cell_height, element }) => {
     newDiv.setAttribute("style",
         `width: ${cell_height}px;
         height: ${cell_width}px;
-        border: 1px solid #ccc;
         box-sizing: border-box;`
     );
     newDiv.classList.add("cell");

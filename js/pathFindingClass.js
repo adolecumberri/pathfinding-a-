@@ -22,7 +22,7 @@ class pathFinding {
     }
 
     /**
-     * @param {(TYPES.VALID | "Invalid" | "Blocked" | TYPES.GOAL) [][]} grid 
+     * @param {( "EMPTY" | "BLOQUED" | "GOAL" | "START") [][]} grid 
      */
     constructor(grid) {
 
