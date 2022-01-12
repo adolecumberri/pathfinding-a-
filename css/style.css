@@ -53,11 +53,11 @@ html, body {
 
 
 .GOAL {
-    background-color:red;
+    background-color:#fc3a3a;
 }
 
 .START {
-    background-color: green;
+    background-color: #7dd37d;
 }
 
 .BLOQUED {

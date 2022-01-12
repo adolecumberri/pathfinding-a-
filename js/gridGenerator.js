@@ -6,16 +6,16 @@ let ww = window.screen.width
 
 let cols = 120;
 let rows = 60;
- //adjust cols to the media query
-if( ww <= 1200){
+//adjust cols to the media query
+if (ww <= 1200) {
     cols = 80;
-}else if (ww <= 800){ 
+} else if (ww <= 800) {
     cols = 40;
 }
 
 let gridProcessed = []; //Grid template for the path finding.
-let pathFinding = null; //the pathfinding object
-// size 1200 x 600;
+let pathFindingClass = null; //the pathfinding object
+// // size 1200 x 600;
 let gridDiv = document.getElementById("grid");
 let optionBtns = document.getElementsByClassName("options");
 
@@ -60,14 +60,24 @@ let setCellType = (type) => {
     cellType = type;
 }
 
-let changeCell = ({target}) => {
+let changeCell = ({ target }) => {
     switch (cellType) {
         case TYPES.START:
+            let lastStart = document.getElementsByClassName(TYPES.START)[0];
+            if (lastStart) {
+                lastStart.classList = ['cell'];
+            }
             target.classList.add(TYPES.START);
             break;
+
         case TYPES.GOAL:
+            let lastGoal = document.getElementsByClassName(TYPES.GOAL)[0];
+            if (lastGoal) {
+                lastGoal.classList = ['cell'];
+            }
             target.classList.add(TYPES.GOAL);
             break;
+
         case TYPES.BLOQUED:
             target.classList.add(TYPES.BLOQUED);
             break;
@@ -92,14 +102,10 @@ document.addEventListener('mousedown', function (a) {
         }
     }
 
-    //si es una "cell", altero su estado.
-    // if (target && cellType === TYPES.BLOQUED && target.classList.contains("cell")) {
-    //     changeCell(target);
-    // }
 });
 
 document.addEventListener('mouseup', function (a) {
-console.log("mouseup");
+    console.log("mouseup");
     let cells = document.getElementsByClassName("cell");
 
     for (let cell of cells) {
@@ -108,16 +114,41 @@ console.log("mouseup");
 });
 
 
-const generatePath  = () => {
+const generatePath = () => {
     let cells = document.getElementsByClassName("cell");
     let index = 0;
-    for(let i = 0; i < rows; i++){
-        for(let j = 0; j < cols; j++){
-
-            cells[index].innerHTML = `${index}`;
+    //create prototype.
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            
+            // cells[index].innerHTML = `${index}`;
             index++;
         }
     }
+}
+
+const clearGird = () => {
+    console.time("algo");
+    // let cells = document.getElementsByClassName("cell");
+    // for (let cell of cells) {
+    //     cell.classList = ['cell'];
+    // }
+
+    let bloques = document.getElementsByClassName(TYPES.BLOQUED);
+    let start = document.getElementsByClassName(TYPES.START)[0];
+    let goal = document.getElementsByClassName(TYPES.GOAL)[0];
+ 
+    /**
+     * Como elimino elementos, tengo que iterar desde el final al principio
+     */
+    for (let i = bloques.length - 1; i >= 0; i--) {
+        bloques[i].classList = ['cell'];
+    }
+
+    if (start) start.classList = ['cell'];
+    if (goal) goal.classList = ['cell'];
+
+    console.timeEnd("algo");
 }
 
 
