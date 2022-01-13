@@ -2,8 +2,12 @@
 
 let grid = [];
 
-let ww = window.screen.width
+let startCoordinates = []; //distance from top, distance from left.
+let path = []; //path to find.
+let ghostGrid = [] // trace made by the pathFinding when it searchs
 
+
+let ww = window.screen.width
 let cols = 120;
 let rows = 60;
 //adjust cols to the media query
@@ -117,14 +121,32 @@ document.addEventListener('mouseup', function (a) {
 const generatePath = () => {
     let cells = document.getElementsByClassName("cell");
     let index = 0;
+    let gridPrototype = []; //grid prototype to insert in the path finding class
     //create prototype.
     for (let i = 0; i < rows; i++) {
+        let row = [];
         for (let j = 0; j < cols; j++) {
             
-            // cells[index].innerHTML = `${index}`;
+            if (cells[index].classList.contains(TYPES.START)) {
+                startCoordinates = [i,j];
+                row.push(TYPES.START);
+            } else if (cells[index].classList.contains(TYPES.GOAL)) {
+                row.push(TYPES.GOAL);
+            } else if (cells[index].classList.contains(TYPES.BLOQUED)) {
+                row.push( TYPES.BLOQUED );
+            }else{
+                row.push(TYPES.EMPTY);
+            }
+              
+            //  cells[index].innerHTML = `${index}`;
             index++;
         }
+        gridPrototype.push(row);
+
     }
+
+    pathFindingClass = new pathFinding(gridPrototype);
+    pathFindingClass.usePathFinding(startCoordinates);
 }
 
 const clearGird = () => {
@@ -137,7 +159,7 @@ const clearGird = () => {
     let bloques = document.getElementsByClassName(TYPES.BLOQUED);
     let start = document.getElementsByClassName(TYPES.START)[0];
     let goal = document.getElementsByClassName(TYPES.GOAL)[0];
- 
+
     /**
      * Como elimino elementos, tengo que iterar desde el final al principio
      */

@@ -8,9 +8,9 @@ class pathFinding {
     queue = [];
     DIRECTIONS = {
         NORTH: "NORTH",
-        EAST: "EASR",
-        SOUTH: DIRECTIONS.SOUTH,
-        WEST: DIRECTIONS.WEST,
+        EAST: "EAST",
+        SOUTH: "SOUTH",
+        WEST: "WEST",
     };
 
     TYPES = {
@@ -21,6 +21,8 @@ class pathFinding {
         START: "START",
     }
 
+    // newLocation = null;
+
     /**
      * @param {( "EMPTY" | "BLOQUED" | "GOAL" | "START") [][]} grid 
      */
@@ -28,13 +30,14 @@ class pathFinding {
 
         this.grid = grid;
         this.ghostGrid = grid;
+        debugger;
         this.queue = [];
     }
 
 
     usePathFinding = function (startCoordinates) {
         //initialize ghostGrid
-        this.ghostGrid = grid;
+        this.ghostGrid = this.grid;
 
         let initialDFT = startCoordinates[0]; //Distance From Top
         let initialDFL = startCoordinates[1]; //Distance From Left
@@ -47,46 +50,46 @@ class pathFinding {
         };
 
         //initial queue location.
-        queue = [initialLocation];
+        this.queue = [initialLocation];
 
         // Loop through the grid searching for the goal
-        while (queue.length > 0) {
+        while (this.queue.length > 0) {
             // Take the first location off the queue
-            let currentLocation = queue.shift();
+            let currentLocation = this.queue.shift();
 
             // Explore North
-            let newLocation = this.exploreInDirection(currentLocation, DIRECTIONS.NORTH);
-            let locations = [DIRECTIONS.NORTH]
+            let newLocation = this.exploreInDirection(currentLocation, this.DIRECTIONS.NORTH);
+            let locations = [this.DIRECTIONS.NORTH]
 
 
             if (newLocation.status === TYPES.GOAL) {
                 return newLocation.path;
             } else if (newLocation.status === TYPES.VALID) {
-                queue.push(newLocation);
+                this.queue.push(newLocation);
             }
 
             // Explore East
-            newLocation = this.exploreInDirection(currentLocation, DIRECTIONS.EAST);
+            newLocation = this.exploreInDirection(currentLocation, this.DIRECTIONS.EAST);
             if (newLocation.status === TYPES.GOAL) {
                 return newLocation.path;
             } else if (newLocation.status === TYPES.VALID) {
-                queue.push(newLocation);
+                this.queue.push(newLocation);
             }
 
             // Explore South
-            newLocation = this.exploreInDirection(currentLocation, DIRECTIONS.SOUTH);
+            newLocation = this.exploreInDirection(currentLocation, this.DIRECTIONS.SOUTH);
             if (newLocation.status === TYPES.GOAL) {
                 return newLocation.path;
             } else if (newLocation.status === TYPES.VALID) {
-                queue.push(newLocation);
+                this.queue.push(newLocation);
             }
 
             // Explore West
-            newLocation = this.exploreInDirection(currentLocation, DIRECTIONS.WEST);
+            newLocation = this.exploreInDirection(currentLocation, this.DIRECTIONS.WEST);
             if (newLocation.status === TYPES.GOAL) {
                 return newLocation.path;
             } else if (newLocation.status === TYPES.VALID) {
-                queue.push(newLocation);
+                this.queue.push(newLocation);
             }
         }
 
@@ -107,24 +110,26 @@ class pathFinding {
         //adjust distances from top or left.
         if (direction === "North") {
             dft -= 1;
-        } else if (direction === DIRECTIONS.EAST) {
+        } else if (direction === this.DIRECTIONS.EAST) {
             dfl += 1;
-        } else if (direction === DIRECTIONS.SOUTH) {
+        } else if (direction === this.DIRECTIONS.SOUTH) {
             dft += 1;
-        } else if (direction === DIRECTIONS.WEST) {
+        } else if (direction === this.DIRECTIONS.WEST) {
             dfl -= 1;
         }
 
         let newLocation = {
-            distanceFromTop: dft,
-            distanceFromLeft: dfl,
+            dft: dft,
+            dfl: dfl,
             path: newPath,
-            status: this.locationStatus(newLocation)
+            status: null
         };
+
+        newLocation.status = this.locationStatus(newLocation);
 
         // If this new location is valid, mark it as 'Visited'
         if (newLocation.status === TYPES.VALID) {
-            this.ghostGrid[newLocation.distanceFromTop][newLocation.distanceFromLeft] = "Visited";
+            this.ghostGrid[newLocation.dft][newLocation.dfl] = "Visited";
         }
 
         return newLocation;
