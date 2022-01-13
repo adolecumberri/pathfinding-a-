@@ -28,8 +28,8 @@ class pathFinding {
      */
     constructor(grid) {
 
-        this.grid = grid;
-        this.ghostGrid = grid;
+        this.grid = [...grid];
+        this.ghostGrid = this.grid.slice(0);
         debugger;
         this.queue = [];
     }
@@ -37,7 +37,7 @@ class pathFinding {
 
     usePathFinding = function (startCoordinates) {
         //initialize ghostGrid
-        this.ghostGrid = this.grid;
+        this.ghostGrid = [...this.grid];
 
         let initialDFT = startCoordinates[0]; //Distance From Top
         let initialDFL = startCoordinates[1]; //Distance From Left
@@ -59,8 +59,6 @@ class pathFinding {
 
             // Explore North
             let newLocation = this.exploreInDirection(currentLocation, this.DIRECTIONS.NORTH);
-            let locations = [this.DIRECTIONS.NORTH]
-
 
             if (newLocation.status === TYPES.GOAL) {
                 return newLocation.path;

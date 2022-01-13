@@ -146,7 +146,16 @@ const generatePath = () => {
     }
 
     pathFindingClass = new pathFinding(gridPrototype);
-    pathFindingClass.usePathFinding(startCoordinates);
+    path = pathFindingClass.usePathFinding(startCoordinates);
+
+    paintPath();
+
+}
+
+const paintPath = () => {
+
+
+
 }
 
 const clearGird = () => {
@@ -176,8 +185,9 @@ const clearGird = () => {
 
 //constants
 let TYPES = {
-    GOAL: "GOAL",
-    EMPTY: "EMPTY",
-    BLOQUED: "BLOQUED",
-    START: "START",
-}
+        VALID: "VALID",
+        GOAL: "GOAL",
+        EMPTY: "EMPTY",
+        BLOQUED: "BLOQUED",
+        START: "START",
+    }
