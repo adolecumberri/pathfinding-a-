@@ -154,26 +154,43 @@ const generatePath = () => {
 
 const paintPath = () => {
 
+// let cols = 120;
+// let rows = 60;
+// [60,120]
+//posiciones respecto a top y left (NO son indices)
+    let [ top, left ] = startCoordinates;
+let initialPointer = top * 120 + left ;
+let movement = {
+    NORTH: -cols,
+    EAST: 1,
+    SOUTH: cols,
+    WEST: -1,
+};
+    path.forEach( dir => {
+        if( grid[ initialPointer + movement[dir] ] === undefined ) debugger;
+        grid[ initialPointer + movement[dir] ].classList.add("PATH");
+        initialPointer += movement[dir];
+    });
 
 
 }
 
 const clearGird = () => {
-    console.time("algo");
-    // let cells = document.getElementsByClassName("cell");
-    // for (let cell of cells) {
-    //     cell.classList = ['cell'];
-    // }
 
     let bloques = document.getElementsByClassName(TYPES.BLOQUED);
     let start = document.getElementsByClassName(TYPES.START)[0];
     let goal = document.getElementsByClassName(TYPES.GOAL)[0];
-
+    let path = document.getElementsByClassName('PATH');
+    path = [];
     /**
      * Como elimino elementos, tengo que iterar desde el final al principio
      */
     for (let i = bloques.length - 1; i >= 0; i--) {
         bloques[i].classList = ['cell'];
+    }
+
+    for (let i = path.length - 1; i >= 0; i--) {
+        path[i].classList = ['cell'];
     }
 
     if (start) start.classList = ['cell'];

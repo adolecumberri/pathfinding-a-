@@ -30,7 +30,7 @@ class pathFinding {
 
         this.grid = [...grid];
         this.ghostGrid = this.grid.slice(0);
-        debugger;
+        
         this.queue = [];
     }
 
@@ -140,7 +140,7 @@ class pathFinding {
      */
     locationStatus = function (location) {
 
-        if (this.ghostGrid[location.dfl] === undefined) debugger;
+        // if (this.ghostGrid[location.dfl] === undefined) debugger;
 
         let gridXSize = this.ghostGrid.length; // 1ºst column length
         let gridYSize = this.ghostGrid[0].length; // 1ºst row length
