@@ -166,6 +166,8 @@ let movement = {
     SOUTH: cols,
     WEST: -1,
 };
+
+console.log(path);
     path.forEach( dir => {
         if( grid[ initialPointer + movement[dir] ] === undefined ) debugger;
         grid[ initialPointer + movement[dir] ].classList.add("PATH");
