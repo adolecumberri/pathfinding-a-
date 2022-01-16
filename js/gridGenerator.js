@@ -10,12 +10,12 @@ let ghostGrid = [] // trace made by the pathFinding when it searchs
 let ww = window.innerWidth
 let cols = 120;
 let rows = 60;
-//adjust cols to the media query
-// if (ww <= 1200) {
-//     cols = 80;
-// } else if (ww <= 800) {
-//     cols = 40;
-// }
+// adjust cols to the media query
+if (ww <= 1200 && ww >= 800) {
+    cols = 80;
+} else if (ww <= 800) {
+    cols = 40;
+}
 
 let gridProcessed = []; //Grid template for the path finding.
 let pathFindingClass = null; //the pathfinding object
@@ -118,18 +118,18 @@ document.addEventListener('mouseup', function (a) {
     }
 });
 
-// window.onresize = function (a) {
-// console.log("resize", window.innerWidth);
-//     if (window.innerWidth > 1200) {
-//         cols = 120;
-//     } else if (window.innerWidth <= 1200) {
-//         console.log("< 1200 ");
-//         cols = 80;
-//     } else if (ww <= 800) {
-//         cols = 40;
-//     }
+window.onresize = function (a) {
+console.log("resize", window.innerWidth);
+    if (window.innerWidth > 1200) {
+        cols = 120;
+    } else if (window.innerWidth <= 1200 && window.innerWidth >= 800) {
+        console.log("< 1200 ");
+        cols = 80;
+    } else if (ww <= 800) {
+        cols = 40;
+    }
 
-// }
+}
 
 
 const generatePath = () => {
@@ -137,8 +137,6 @@ const generatePath = () => {
     let index = 0;
     let gridPrototype = []; //grid prototype to insert in the path finding class
 
-
-    console.log({rows,cols})
     //create prototype.
     for (let i = 0; i < rows; i++) {
         let row = [];
@@ -162,6 +160,8 @@ const generatePath = () => {
 
     }
 
+    clearPath();
+
     pathFindingClass = new pathFinding(gridPrototype);
     path = pathFindingClass.usePathFinding(startCoordinates);
 
@@ -171,12 +171,9 @@ const generatePath = () => {
 
 const paintPath = () => {
 
-    // let cols = 120;
-    // let rows = 60;
-    // [60,120]
     //posiciones respecto a top y left (NO son indices)
     let [top, left] = startCoordinates;
-    let initialPointer = top * 120 + left;
+    let initialPointer = top * cols + left;
     let movement = {
         NORTH: -cols,
         EAST: 1,
@@ -184,41 +181,48 @@ const paintPath = () => {
         WEST: -1,
     };
 
-    console.log(path);
     path.forEach(dir => {
         if (grid[initialPointer + movement[dir]] === undefined) debugger;
         grid[initialPointer + movement[dir]].classList.add("PATH");
         initialPointer += movement[dir];
     });
 
-
 }
 
 const clearGird = () => {
 
-    let bloques = document.getElementsByClassName(TYPES.BLOQUED);
-    let start = document.getElementsByClassName(TYPES.START)[0];
-    let goal = document.getElementsByClassName(TYPES.GOAL)[0];
-    let path = document.getElementsByClassName('PATH');
-
-    /**
-     * Como elimino elementos, tengo que iterar desde el final al principio
-     */
-    for (let i = bloques.length - 1; i >= 0; i--) {
-        bloques[i].classList = ['cell'];
-    }
-
-    for (let i = path.length - 1; i >= 0; i--) {
-        path[i].classList = ['cell'];
-    }
-    path = [];
-
-    if (start) start.classList = ['cell'];
-    if (goal) goal.classList = ['cell'];
+   clearPath();
+   clearBlocks();
+   clearGoal();
+   clearStart();
 
     console.timeEnd("algo");
 }
 
+const clearPath = () => {
+    let pathCells = document.getElementsByClassName('PATH');
+    for (let i = pathCells.length - 1; i >= 0; i--) {
+        pathCells[i].classList = ['cell'];
+    }
+    path = [];
+}
+
+const clearBlocks = () => {
+    let bloques = document.getElementsByClassName(TYPES.BLOQUED);
+    for (let i = bloques.length - 1; i >= 0; i--) {
+        bloques[i].classList = ['cell'];
+    }
+}
+
+const clearGoal = () => {
+    let goal = document.getElementsByClassName(TYPES.GOAL)[0];
+    if (goal) goal.classList = ['cell'];
+}
+
+const clearStart = () => {
+    let start = document.getElementsByClassName(TYPES.START)[0];
+    if (start) start.classList = ['cell'];
+}
 
 //constants
 let TYPES = {
@@ -228,7 +232,3 @@ let TYPES = {
     BLOQUED: "BLOQUED",
     START: "START",
 }
-
-
-// por debajo de 1200px.
-//79 -> 0-79

@@ -35,6 +35,10 @@ class pathFinding {
         this.queue = [];
     }
 
+    setGrid = (grid) => {
+        this.grid = grid;
+        this.ghostGrid = null;
+    }
 
     usePathFinding = function (startCoordinates) {
         //initialize ghostGrid
