@@ -1,28 +1,30 @@
 
-
+//container of the cells element.
+// HTMLDivElement[]
 let grid = [];
 
+//[number, number];
 let startCoordinates = []; //distance from top, distance from left.
+
+//HTMLDivElements
 let path = []; //path to find.
-let ghostGrid = [] // trace made by the pathFinding when it searchs
 
-
-let ww = window.innerWidth
-let cols = 120;
-let rows = 60;
-// adjust cols to the media query
-let width = 10;
+//cell dimentions
+let width = 10; 
 let height = 10;
 
-if (ww <= 1200 && ww >= 800) {
+//grid dimentions
+let cols = 120;
+let rows = 60;
+
+//adjust dimentions based on window width
+if (window.innerWidth <= 1200 && window.innerWidth >= 800) {
     cols = 80;
-} else if (ww <= 800) {
+} else if (window.innerWidth <= 800) {
     cols = 40;
 }
 
-let gridProcessed = []; //Grid template for the path finding.
 let pathFindingClass = null; //the pathfinding object
-// // size 1200 x 600;
 let gridDiv = document.getElementById("grid");
 let optionBtns = document.getElementsByClassName("options");
 
@@ -43,11 +45,7 @@ let optionsHighlight = (target) => {
 //cells generation.
 for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
-        grid.push(generateBox({
-            cell_width: width,
-            cell_height: height,
-            element: gridDiv
-        }));
+        grid.push(generateBox()); //set cells in the container and return them
     }
 }
 
@@ -82,48 +80,21 @@ let changeCell = ({ target }) => {
     }
 }
 
-/* Events */
-document.addEventListener('click', function (e) {
-    let target = e.target;
-    //si es una "cell", altero su estado.
-    if (target && cellType && target.classList.contains("cell")) {
-        changeCell(e);
-    }
-});
 
-document.addEventListener('mousedown', function (a) {
-    if (cellType === TYPES.BLOQUED) {
+const generateBox = () => {
+    let newDiv = document.createElement("div");
+    newDiv.setAttribute("style",
+        `width: ${width}px;
+        height: ${height}px;
+        box-sizing: border-box;`
+    );
+    newDiv.classList.add("cell");
+    
+    gridDiv.appendChild(newDiv);
 
-        let cells = document.getElementsByClassName("cell");
-        for (let cell of cells) {
-            cell.addEventListener('mouseover', changeCell);
-        }
-    }
-
-});
-
-document.addEventListener('mouseup', function (a) {
-    console.log("mouseup");
-    let cells = document.getElementsByClassName("cell");
-
-    for (let cell of cells) {
-        cell.removeEventListener('mouseover', changeCell);
-    }
-});
-
-window.onresize = function (a) {
-console.log("resize", window.innerWidth);
-    if (window.innerWidth > 1200) {
-        cols = 120;
-    } else if (window.innerWidth <= 1200 && window.innerWidth >= 800) {
-        console.log("< 1200 ");
-        cols = 80;
-    } else if (ww <= 800) {
-        cols = 40;
-    }
+    return newDiv;
 
 }
-
 
 const generatePath = () => {
     let cells = document.getElementsByClassName("cell");
@@ -216,6 +187,51 @@ const clearStart = () => {
     let start = document.getElementsByClassName(TYPES.START)[0];
     if (start) start.classList = ['cell'];
 }
+
+
+/* Events */
+document.addEventListener('click', function (e) {
+    let target = e.target;
+    //si es una "cell", altero su estado.
+    if (target && cellType && target.classList.contains("cell")) {
+        changeCell(e);
+    }
+});
+
+document.addEventListener('mousedown', function () {
+
+    if (cellType === TYPES.BLOQUED) {
+
+        let cells = document.getElementsByClassName("cell");
+        for (let cell of cells) {
+            cell.addEventListener('mouseover', changeCell);
+        }
+    }
+
+});
+
+document.addEventListener('mouseup', function (a) {
+    
+    let cells = document.getElementsByClassName("cell");
+
+    for (let cell of cells) {
+        cell.removeEventListener('mouseover', changeCell);
+    }
+});
+
+window.onresize = function () {
+    
+    if (window.innerWidth > 1200) {
+        cols = 120;
+    } else if (window.innerWidth <= 1200 && window.innerWidth >= 800) {
+        console.log("< 1200 ");
+        cols = 80;
+    } else if (window.innerWidth <= 800) {
+        cols = 40;
+    }
+
+}
+
 
 //constants
 let TYPES = {
