@@ -11,6 +11,9 @@ let ww = window.innerWidth
 let cols = 120;
 let rows = 60;
 // adjust cols to the media query
+let width = 10;
+let height = 10;
+
 if (ww <= 1200 && ww >= 800) {
     cols = 80;
 } else if (ww <= 800) {
@@ -36,16 +39,6 @@ let optionsHighlight = (target) => {
     //añado el highlight al boton clickeado.
     target.classList.add("highlight");
 }
-
-
-let { width, height } = loadBoxDimensions(
-    {
-        t_width: 1200,
-        t_height: 600,
-        cols: cols,
-        rows: rows
-    }
-);
 
 //cells generation.
 for (let i = 0; i < cols; i++) {
