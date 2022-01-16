@@ -7,15 +7,15 @@ let path = []; //path to find.
 let ghostGrid = [] // trace made by the pathFinding when it searchs
 
 
-let ww = window.screen.width
+let ww = window.innerWidth
 let cols = 120;
 let rows = 60;
 //adjust cols to the media query
-if (ww <= 1200) {
-    cols = 80;
-} else if (ww <= 800) {
-    cols = 40;
-}
+// if (ww <= 1200) {
+//     cols = 80;
+// } else if (ww <= 800) {
+//     cols = 40;
+// }
 
 let gridProcessed = []; //Grid template for the path finding.
 let pathFindingClass = null; //the pathfinding object
@@ -46,6 +46,7 @@ let { width, height } = loadBoxDimensions(
         rows: rows
     }
 );
+
 //cells generation.
 for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
@@ -117,27 +118,43 @@ document.addEventListener('mouseup', function (a) {
     }
 });
 
+// window.onresize = function (a) {
+// console.log("resize", window.innerWidth);
+//     if (window.innerWidth > 1200) {
+//         cols = 120;
+//     } else if (window.innerWidth <= 1200) {
+//         console.log("< 1200 ");
+//         cols = 80;
+//     } else if (ww <= 800) {
+//         cols = 40;
+//     }
+
+// }
+
 
 const generatePath = () => {
     let cells = document.getElementsByClassName("cell");
     let index = 0;
     let gridPrototype = []; //grid prototype to insert in the path finding class
+
+
+    console.log({rows,cols})
     //create prototype.
     for (let i = 0; i < rows; i++) {
         let row = [];
         for (let j = 0; j < cols; j++) {
-            
+
             if (cells[index].classList.contains(TYPES.START)) {
-                startCoordinates = [i,j];
+                startCoordinates = [i, j];
                 row.push(TYPES.START);
             } else if (cells[index].classList.contains(TYPES.GOAL)) {
                 row.push(TYPES.GOAL);
             } else if (cells[index].classList.contains(TYPES.BLOQUED)) {
-                row.push( TYPES.BLOQUED );
-            }else{
+                row.push(TYPES.BLOQUED);
+            } else {
                 row.push(TYPES.EMPTY);
             }
-              
+
             //  cells[index].innerHTML = `${index}`;
             index++;
         }
@@ -154,23 +171,23 @@ const generatePath = () => {
 
 const paintPath = () => {
 
-// let cols = 120;
-// let rows = 60;
-// [60,120]
-//posiciones respecto a top y left (NO son indices)
-    let [ top, left ] = startCoordinates;
-let initialPointer = top * 120 + left ;
-let movement = {
-    NORTH: -cols,
-    EAST: 1,
-    SOUTH: cols,
-    WEST: -1,
-};
+    // let cols = 120;
+    // let rows = 60;
+    // [60,120]
+    //posiciones respecto a top y left (NO son indices)
+    let [top, left] = startCoordinates;
+    let initialPointer = top * 120 + left;
+    let movement = {
+        NORTH: -cols,
+        EAST: 1,
+        SOUTH: cols,
+        WEST: -1,
+    };
 
-console.log(path);
-    path.forEach( dir => {
-        if( grid[ initialPointer + movement[dir] ] === undefined ) debugger;
-        grid[ initialPointer + movement[dir] ].classList.add("PATH");
+    console.log(path);
+    path.forEach(dir => {
+        if (grid[initialPointer + movement[dir]] === undefined) debugger;
+        grid[initialPointer + movement[dir]].classList.add("PATH");
         initialPointer += movement[dir];
     });
 
@@ -183,7 +200,7 @@ const clearGird = () => {
     let start = document.getElementsByClassName(TYPES.START)[0];
     let goal = document.getElementsByClassName(TYPES.GOAL)[0];
     let path = document.getElementsByClassName('PATH');
-    path = [];
+
     /**
      * Como elimino elementos, tengo que iterar desde el final al principio
      */
@@ -194,6 +211,7 @@ const clearGird = () => {
     for (let i = path.length - 1; i >= 0; i--) {
         path[i].classList = ['cell'];
     }
+    path = [];
 
     if (start) start.classList = ['cell'];
     if (goal) goal.classList = ['cell'];
@@ -204,9 +222,13 @@ const clearGird = () => {
 
 //constants
 let TYPES = {
-        VALID: "VALID",
-        GOAL: "GOAL",
-        EMPTY: "EMPTY",
-        BLOQUED: "BLOQUED",
-        START: "START",
-    }
+    VALID: "VALID",
+    GOAL: "GOAL",
+    EMPTY: "EMPTY",
+    BLOQUED: "BLOQUED",
+    START: "START",
+}
+
+
+// por debajo de 1200px.
+//79 -> 0-79

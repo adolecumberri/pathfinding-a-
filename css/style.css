@@ -53,19 +53,19 @@ html, body {
 
 
 .GOAL {
-    background-color:#fc3a3a;
+    background-color:#fc3a3a !important;
 }
 
 .START {
-    background-color: #7dd37d;
+    background-color: #7dd37d !important;
 }
 
 .BLOQUED {
-    background-color: #464646;
+    background-color: #464646 !important;
 }
 
 .PATH {
-    background-color: #e3ff7e
+    background-color: #bc9a07;
 }
 
 .options  {

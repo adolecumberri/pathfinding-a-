@@ -1,5 +1,6 @@
 
 
+//backup before use PathFinding with grids to check where it fails.
 class pathFinding {
 
     grid = null;
@@ -30,7 +31,7 @@ class pathFinding {
 
         this.grid = [...grid];
         this.ghostGrid = this.grid.slice(0);
-        
+
         this.queue = [];
     }
 
@@ -56,39 +57,17 @@ class pathFinding {
         while (this.queue.length > 0) {
             // Take the first location off the queue
             let currentLocation = this.queue.shift();
+            let newLocation = null;
 
-            // Explore North
-            let newLocation = this.exploreInDirection(currentLocation, this.DIRECTIONS.NORTH);
-
-            if (newLocation.status === TYPES.GOAL) {
-                return newLocation.path;
-            } else if (newLocation.status === TYPES.VALID) {
-                this.queue.push(newLocation);
-            }
-
-            // Explore East
-            newLocation = this.exploreInDirection(currentLocation, this.DIRECTIONS.EAST);
-            if (newLocation.status === TYPES.GOAL) {
-                return newLocation.path;
-            } else if (newLocation.status === TYPES.VALID) {
-                this.queue.push(newLocation);
-            }
-
-            // Explore South
-            newLocation = this.exploreInDirection(currentLocation, this.DIRECTIONS.SOUTH);
-            if (newLocation.status === TYPES.GOAL) {
-                return newLocation.path;
-            } else if (newLocation.status === TYPES.VALID) {
-                this.queue.push(newLocation);
-            }
-
-            // Explore West
-            newLocation = this.exploreInDirection(currentLocation, this.DIRECTIONS.WEST);
-            if (newLocation.status === TYPES.GOAL) {
-                return newLocation.path;
-            } else if (newLocation.status === TYPES.VALID) {
-                this.queue.push(newLocation);
-            }
+            //iteration throw direction.
+            for(let direction in this.DIRECTIONS) {
+                newLocation = this.exploreInDirection(currentLocation, direction);
+                if (newLocation.status === TYPES.GOAL) {
+                    return newLocation.path;
+                } else if (newLocation.status === TYPES.VALID) {
+                    this.queue.push(newLocation);
+                }
+            }  
         }
 
         // No valid path found
@@ -106,7 +85,7 @@ class pathFinding {
         let dfl = currentLocation.dfl;
 
         //adjust distances from top or left.
-        if (direction === "North") {
+        if (direction === this.DIRECTIONS.NORTH) {
             dft -= 1;
         } else if (direction === this.DIRECTIONS.EAST) {
             dfl += 1;
